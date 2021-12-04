@@ -1,6 +1,6 @@
-use crate::day03::BitCriteria::{LeastCommon, MostCommon};
 use aoc_runner_derive::{aoc, aoc_generator};
-use std::cmp::Ordering;
+use std::cmp::Ordering::*;
+use BitCriteria::*;
 
 #[aoc_generator(day3)]
 fn parse_input(input: &str) -> (Vec<u32>, usize) {
@@ -29,9 +29,9 @@ fn part1((entries, entry_len): &(Vec<u32>, usize)) -> u32 {
         let pow2 = 1 << i;
 
         match (count * 2).cmp(&(entries.len() as u32)) {
-            Ordering::Greater => gamma_rate += pow2,
-            Ordering::Less => epsilon_rate += pow2,
-            Ordering::Equal => {
+            Greater => gamma_rate += pow2,
+            Less => epsilon_rate += pow2,
+            Equal => {
                 gamma_rate += pow2;
                 epsilon_rate += pow2;
             }

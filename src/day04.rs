@@ -1,6 +1,6 @@
-use crate::day04::BoardState::*;
-use crate::day04::CellState::*;
 use aoc_runner_derive::{aoc, aoc_generator};
+use BoardState::*;
+use CellState::*;
 
 #[derive(Debug, Clone, PartialEq)]
 enum CellState {
