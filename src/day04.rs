@@ -75,56 +75,60 @@ impl Board {
             .sum::<u32>()
             * *last_number as u32
     }
+
+    fn parse_board(board_str: &str) -> Self {
+        Board {
+            cells: board_str
+                .lines()
+                .enumerate()
+                .map(|(row_num, row)| {
+                    row.split_whitespace()
+                        .enumerate()
+                        .map(|(column_num, n)| Cell {
+                            number: n.parse().unwrap(),
+                            position: Position {
+                                row: row_num,
+                                column: column_num,
+                            },
+                            state: Unmarked,
+                        })
+                        .collect::<Vec<Cell>>()
+                })
+                .flatten()
+                .collect(),
+            state: Playing,
+        }
+    }
 }
 
-type Order = Vec<u8>;
+struct DrawOrder(Vec<u8>);
 
-fn parse_order(order_str: &str) -> Order {
-    order_str
-        .split(',')
-        .map(|number| number.parse().unwrap())
-        .collect()
-}
-
-fn parse_board(board_str: &str) -> Board {
-    Board {
-        cells: board_str
-            .lines()
-            .enumerate()
-            .map(|(row_num, row)| {
-                row.split_whitespace()
-                    .enumerate()
-                    .map(|(column_num, n)| Cell {
-                        number: n.parse().unwrap(),
-                        position: Position {
-                            row: row_num,
-                            column: column_num,
-                        },
-                        state: Unmarked,
-                    })
-                    .collect::<Vec<Cell>>()
-            })
-            .flatten()
-            .collect(),
-        state: Playing,
+impl DrawOrder {
+    fn parse_order(draw_order_str: &str) -> Self {
+        Self(
+            draw_order_str
+                .split(',')
+                .map(|number| number.parse().unwrap())
+                .collect(),
+        )
     }
 }
 
 #[aoc_generator(day4)]
-fn parse_input(input: &str) -> (Order, Vec<Board>) {
+fn parse_input(input: &str) -> (DrawOrder, Vec<Board>) {
     let mut split = input.split("\n\n");
 
-    let order = parse_order(split.next().unwrap());
-    let boards = split.map(parse_board).collect();
+    let draw_order = DrawOrder::parse_order(split.next().unwrap());
+    let boards = split.map(Board::parse_board).collect();
 
-    (order, boards)
+    (draw_order, boards)
 }
 
 #[aoc(day4, part1)]
-fn part1((order, boards): &(Order, Vec<Board>)) -> Option<u32> {
+fn part1((draw_order, boards): &(DrawOrder, Vec<Board>)) -> Option<u32> {
     let mut boards = (*boards).clone();
 
-    for number in order {
+    for number in draw_order.0.iter() {
         for board in boards.iter_mut() {
             if board.make_turn(number) == Won {
                 return Some(board.calculate_score(number));
@@ -136,11 +140,11 @@ fn part1((order, boards): &(Order, Vec<Board>)) -> Option<u32> {
 }
 
 #[aoc(day4, part2)]
-fn part2((order, boards): &(Order, Vec<Board>)) -> Option<u32> {
+fn part2((draw_order, boards): &(DrawOrder, Vec<Board>)) -> Option<u32> {
     let mut boards = (*boards).clone();
     let mut playing_count = boards.len();
 
-    for number in order {
+    for number in draw_order.0.iter() {
         for board in boards.iter_mut() {
             if board.state == Won {
                 continue;
