@@ -75,8 +75,10 @@ impl Board {
             .sum::<u32>()
             * *last_number as u32
     }
+}
 
-    fn parse_board(board_str: &str) -> Self {
+impl From<&str> for Board {
+    fn from(board_str: &str) -> Self {
         Board {
             cells: board_str
                 .lines()
@@ -103,8 +105,8 @@ impl Board {
 
 struct DrawOrder(Vec<u8>);
 
-impl DrawOrder {
-    fn parse_order(draw_order_str: &str) -> Self {
+impl From<&str> for DrawOrder {
+    fn from(draw_order_str: &str) -> Self {
         Self(
             draw_order_str
                 .split(',')
@@ -118,8 +120,8 @@ impl DrawOrder {
 fn parse_input(input: &str) -> (DrawOrder, Vec<Board>) {
     let mut split = input.split("\n\n");
 
-    let draw_order = DrawOrder::parse_order(split.next().unwrap());
-    let boards = split.map(Board::parse_board).collect();
+    let draw_order = split.next().unwrap().into();
+    let boards = split.map(|b| b.into()).collect();
 
     (draw_order, boards)
 }
