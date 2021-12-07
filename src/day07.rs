@@ -6,8 +6,8 @@ fn parse_input(input: &str) -> Vec<i32> {
     input.split(',').map(|c| c.parse().unwrap()).collect()
 }
 
-#[aoc(day7, part1)]
-fn part1(positions: &[i32]) -> i32 {
+#[aoc(day7, part1, median)]
+fn part1_median(positions: &[i32]) -> i32 {
     let mut positions = positions.to_owned();
     positions.sort_unstable();
 
@@ -17,6 +17,15 @@ fn part1(positions: &[i32]) -> i32 {
         .into_iter()
         .map(|pos| pos.sub(&median).abs())
         .sum()
+}
+
+#[aoc(day7, part1)]
+fn part1(positions: &[i32]) -> i32 {
+    min_cost(positions, manhattan_cost)
+}
+
+fn manhattan_cost(positions: &[i32], target: i32) -> i32 {
+    positions.iter().map(|pos| pos.sub(&target).abs()).sum()
 }
 
 fn geometric_cost(positions: &[i32], target: i32) -> i32 {
@@ -29,8 +38,7 @@ fn geometric_cost(positions: &[i32], target: i32) -> i32 {
         .sum()
 }
 
-#[aoc(day7, part2)]
-fn part2(positions: &[i32]) -> i32 {
+fn min_cost(positions: &[i32], cost: impl Fn(&[i32], i32) -> i32) -> i32 {
     let mut low = positions.iter().min().unwrap().to_owned();
     let mut high = positions.iter().max().unwrap().to_owned();
 
@@ -40,16 +48,21 @@ fn part2(positions: &[i32]) -> i32 {
         let left = middle - 1;
         let right = middle + 1;
 
-        let cost_to_middle = geometric_cost(positions, middle);
+        let cost_to_middle = cost(positions, middle);
 
-        if geometric_cost(positions, left) < cost_to_middle {
+        if cost(positions, left) < cost_to_middle {
             high = left;
-        } else if geometric_cost(positions, right) < cost_to_middle {
+        } else if cost(positions, right) < cost_to_middle {
             low = right;
         } else {
             return cost_to_middle;
         }
     }
+}
+
+#[aoc(day7, part2)]
+fn part2(positions: &[i32]) -> i32 {
+    min_cost(positions, geometric_cost)
 }
 
 #[cfg(test)]
@@ -61,6 +74,11 @@ mod tests {
     #[test]
     fn part1_example() {
         assert_eq!(part1(&parse_input(TEST_INPUT)), 37);
+    }
+
+    #[test]
+    fn part1_median_example() {
+        assert_eq!(part1_median(&parse_input(TEST_INPUT)), 37);
     }
 
     #[test]
