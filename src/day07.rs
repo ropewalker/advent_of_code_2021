@@ -2,12 +2,12 @@ use aoc_runner_derive::{aoc, aoc_generator};
 use std::ops::Sub;
 
 #[aoc_generator(day7)]
-fn parse_input(input: &str) -> Vec<i64> {
+fn parse_input(input: &str) -> Vec<i32> {
     input.split(',').map(|c| c.parse().unwrap()).collect()
 }
 
 #[aoc(day7, part1)]
-fn part1(positions: &[i64]) -> i64 {
+fn part1(positions: &[i32]) -> i32 {
     let mut positions = positions.to_owned();
     positions.sort_unstable();
 
@@ -19,7 +19,7 @@ fn part1(positions: &[i64]) -> i64 {
         .sum()
 }
 
-fn geometric_cost(positions: &[i64], target: i64) -> i64 {
+fn geometric_cost(positions: &[i32], target: i32) -> i32 {
     positions
         .iter()
         .map(|pos| {
@@ -30,7 +30,7 @@ fn geometric_cost(positions: &[i64], target: i64) -> i64 {
 }
 
 #[aoc(day7, part2)]
-fn part2(positions: &[i64]) -> i64 {
+fn part2(positions: &[i32]) -> i32 {
     let mut low = positions.iter().min().unwrap().to_owned();
     let mut high = positions.iter().max().unwrap().to_owned();
 
