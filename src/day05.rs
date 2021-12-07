@@ -2,7 +2,7 @@ use crate::day05::SegmentOrientation::*;
 use crate::day05::TriangleOrientation::*;
 use aoc_runner_derive::{aoc, aoc_generator};
 use std::cmp::Ordering::*;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 #[derive(Clone, Debug, Hash, PartialEq, Eq)]
 struct Point {
@@ -241,6 +241,27 @@ fn part1(segments: &[Segment]) -> usize {
     overlap_points.len()
 }
 
+#[aoc(day5, part1, all_points)]
+fn part1_all_points(segments: &[Segment]) -> usize {
+    let mut overlap_points = HashMap::new();
+
+    segments
+        .iter()
+        .filter(|&s| s.orientation == Horizontal || s.orientation == Vertical)
+        .for_each(|segment| {
+            segment
+                .to_owned()
+                .into_points()
+                .into_iter()
+                .for_each(|point| {
+                    let count = overlap_points.entry(point).or_insert(0);
+                    *count += 1;
+                })
+        });
+
+    overlap_points.values().filter(|&count| *count > 1).count()
+}
+
 #[aoc(day5, part2)]
 fn part2(segments: &[Segment]) -> usize {
     let mut overlap_points = HashSet::new();
@@ -252,6 +273,24 @@ fn part2(segments: &[Segment]) -> usize {
     }
 
     overlap_points.len()
+}
+
+#[aoc(day5, part2, all_points)]
+fn part2_all_points(segments: &[Segment]) -> usize {
+    let mut overlap_points = HashMap::new();
+
+    segments.iter().for_each(|segment| {
+        segment
+            .to_owned()
+            .into_points()
+            .into_iter()
+            .for_each(|point| {
+                let count = overlap_points.entry(point).or_insert(0);
+                *count += 1;
+            })
+    });
+
+    overlap_points.values().filter(|&count| *count > 1).count()
 }
 
 #[cfg(test)]
@@ -275,7 +314,17 @@ mod tests {
     }
 
     #[test]
+    fn part1_all_points_example() {
+        assert_eq!(part1_all_points(&parse_input(TEST_INPUT)), 5);
+    }
+
+    #[test]
     fn part2_example() {
         assert_eq!(part2(&parse_input(TEST_INPUT)), 12);
+    }
+
+    #[test]
+    fn part2_all_points_example() {
+        assert_eq!(part2_all_points(&parse_input(TEST_INPUT)), 12);
     }
 }
