@@ -65,6 +65,15 @@ fn part2(positions: &[i32]) -> i32 {
     min_cost(positions, geometric_cost)
 }
 
+#[aoc(day7, part2, mean)]
+fn part2_mean(positions: &[i32]) -> i32 {
+    let mean = positions.iter().sum::<i32>() as f64 / positions.len() as f64;
+    let mean_floor = mean.floor() as i32;
+    let mean_ceil = mean.ceil() as i32;
+
+    geometric_cost(positions, mean_floor).min(geometric_cost(positions, mean_ceil))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -84,5 +93,10 @@ mod tests {
     #[test]
     fn part2_example() {
         assert_eq!(part2(&parse_input(TEST_INPUT)), 168);
+    }
+
+    #[test]
+    fn part2_mean_example() {
+        assert_eq!(part2_mean(&parse_input(TEST_INPUT)), 168);
     }
 }
