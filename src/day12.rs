@@ -31,7 +31,7 @@ fn parse_input(input: &str) -> CaveSystem {
 }
 
 fn is_small(cave: &str) -> bool {
-    cave.to_ascii_lowercase() == *cave
+    cave.chars().next().unwrap().is_ascii_lowercase()
 }
 
 fn count_simple_paths_to_end(
