@@ -100,12 +100,17 @@ fn count_complex_paths_to_end(
                 }
             }
 
-            count += count_complex_paths_to_end(
-                cave_system,
-                connected_cave,
-                visited_small_caves,
-                twice_visited_small_cave,
-            );
+            if twice_visited_small_cave.is_some() {
+                count +=
+                    count_simple_paths_to_end(cave_system, connected_cave, visited_small_caves);
+            } else {
+                count += count_complex_paths_to_end(
+                    cave_system,
+                    connected_cave,
+                    visited_small_caves,
+                    twice_visited_small_cave,
+                );
+            }
 
             if *twice_visited_small_cave == Some(connected_cave.to_owned()) {
                 *twice_visited_small_cave = None
