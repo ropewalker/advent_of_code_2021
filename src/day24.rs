@@ -78,7 +78,7 @@ fn find_model_number_by_type(blocks: &[Block], model_number_type: ModelNumberTyp
 
         for w in match model_number_type {
             ModelNumberType::Largest => (1..=9).collect::<Vec<_>>(),
-            ModelNumberType::Smallest => (1..=9).collect::<Vec<_>>(),
+            ModelNumberType::Smallest => (1..=9).rev().collect::<Vec<_>>(),
         } {
             if block.div_z == 26 && node.z_input % 26 + block.add_x != w {
                 continue;
