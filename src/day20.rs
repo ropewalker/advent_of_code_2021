@@ -72,12 +72,11 @@ impl From<&str> for Image {
             pixels: image_str
                 .lines()
                 .enumerate()
-                .map(|(y, line)| {
+                .flat_map(|(y, line)| {
                     line.chars()
                         .enumerate()
                         .map(move |(x, c)| ((x as i32, y as i32).into(), c.into()))
                 })
-                .flatten()
                 .collect(),
             top_left: (0, 0).into(),
             bottom_right: (

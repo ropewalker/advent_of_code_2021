@@ -69,7 +69,7 @@ fn count_simple_paths_to_end(
 fn part1(cave_system: &CaveSystem) -> usize {
     let mut visited_small_caves = [START.to_owned()].iter().cloned().collect();
 
-    count_simple_paths_to_end(cave_system, &(START.to_owned()), &mut visited_small_caves)
+    count_simple_paths_to_end(cave_system, START, &mut visited_small_caves)
 }
 
 fn count_complex_paths_to_end(
@@ -130,7 +130,7 @@ fn part2(cave_system: &CaveSystem) -> usize {
 
     count_complex_paths_to_end(
         cave_system,
-        &(START.to_owned()),
+        START,
         &mut visited_caves,
         &mut twice_visited_small_cave,
     )

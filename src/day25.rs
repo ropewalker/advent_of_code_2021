@@ -83,7 +83,7 @@ struct Map {
 impl Debug for Map {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         for y in 0..self.height {
-            write!(f, "{}", '\n')?;
+            writeln!(f)?;
 
             for x in 0..self.width {
                 if self.cucumbers_positions.contains_key(&((x, y).into())) {
@@ -93,7 +93,7 @@ impl Debug for Map {
                         self.cucumbers_positions.get(&((x, y).into())).unwrap()
                     )?;
                 } else {
-                    write!(f, "{}", '.')?;
+                    write!(f, ".")?;
                 };
             }
         }
@@ -108,13 +108,12 @@ impl From<&str> for Map {
             cucumbers_positions: map
                 .lines()
                 .enumerate()
-                .map(|(y, line)| {
+                .flat_map(|(y, line)| {
                     line.chars()
                         .enumerate()
                         .filter(|(_, c)| *c != '.')
                         .map(move |(x, c)| ((x, y).into(), c.into()))
                 })
-                .flatten()
                 .collect(),
             width: map.lines().next().unwrap().len(),
             height: map.lines().count(),

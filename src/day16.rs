@@ -200,25 +200,13 @@ fn part2(packets: &[Packet]) -> Option<u64> {
                     Minimum => tokens.push(LiteralValue(operands.into_iter().min().unwrap())),
                     Maximum => tokens.push(LiteralValue(operands.into_iter().max().unwrap())),
                     GreaterThan => tokens.push(LiteralValue(
-                        if operands.pop().unwrap() > operands.pop().unwrap() {
-                            1
-                        } else {
-                            0
-                        },
+                        (operands.pop().unwrap() > operands.pop().unwrap()) as u64,
                     )),
                     LessThan => tokens.push(LiteralValue(
-                        if operands.pop().unwrap() < operands.pop().unwrap() {
-                            1
-                        } else {
-                            0
-                        },
+                        (operands.pop().unwrap() < operands.pop().unwrap()) as u64,
                     )),
                     EqualTo => tokens.push(LiteralValue(
-                        if operands.pop().unwrap() == operands.pop().unwrap() {
-                            1
-                        } else {
-                            0
-                        },
+                        (operands.pop().unwrap() == operands.pop().unwrap()) as u64,
                     )),
                     _ => unreachable!(),
                 }

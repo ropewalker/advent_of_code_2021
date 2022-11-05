@@ -29,8 +29,7 @@ fn parse_input(input: &str) -> Vec<Entry> {
 fn part1(entries: &[Entry]) -> usize {
     entries
         .iter()
-        .map(|(_, four_digit_output_value)| four_digit_output_value)
-        .flatten()
+        .flat_map(|(_, four_digit_output_value)| four_digit_output_value)
         .filter(|&digit| {
             digit.len() == 2 || digit.len() == 3 || digit.len() == 4 || digit.len() == 7
         })

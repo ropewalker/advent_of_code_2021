@@ -42,9 +42,9 @@ impl From<&str> for Cuboid {
     fn from(cuboid: &str) -> Self {
         let mut range_split = cuboid.split(',');
 
-        let mut x_range = (&range_split.next().unwrap()[2..]).split("..");
-        let mut y_range = (&range_split.next().unwrap()[2..]).split("..");
-        let mut z_range = (&range_split.next().unwrap()[2..]).split("..");
+        let mut x_range = range_split.next().unwrap()[2..].split("..");
+        let mut y_range = range_split.next().unwrap()[2..].split("..");
+        let mut z_range = range_split.next().unwrap()[2..].split("..");
 
         Cuboid::new(
             x_range.next().unwrap().parse().unwrap(),

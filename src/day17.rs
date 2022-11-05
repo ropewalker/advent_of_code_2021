@@ -14,8 +14,7 @@ struct TargetArea {
 fn parse_input(input: &str) -> TargetArea {
     let mut split = input[PREFIX.len()..]
         .split(", ")
-        .map(|r| r[2..].split("..").map(|c| c.parse().unwrap()))
-        .flatten();
+        .flat_map(|r| r[2..].split("..").map(|c| c.parse().unwrap()));
 
     TargetArea {
         x_min: split.next().unwrap(),

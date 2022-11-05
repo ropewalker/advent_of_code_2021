@@ -83,7 +83,7 @@ impl From<&str> for Board {
             cells: board_str
                 .lines()
                 .enumerate()
-                .map(|(row_num, row)| {
+                .flat_map(|(row_num, row)| {
                     row.split_whitespace()
                         .enumerate()
                         .map(|(column_num, n)| Cell {
@@ -96,7 +96,6 @@ impl From<&str> for Board {
                         })
                         .collect::<Vec<Cell>>()
                 })
-                .flatten()
                 .collect(),
             state: Playing,
         }

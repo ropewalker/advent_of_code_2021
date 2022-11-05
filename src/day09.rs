@@ -79,7 +79,7 @@ fn parse_input(input: &str) -> DepthMap {
         input
             .lines()
             .enumerate()
-            .map(|(y, line)| {
+            .flat_map(|(y, line)| {
                 line.chars().enumerate().map(move |(x, c)| {
                     (
                         Point {
@@ -90,7 +90,6 @@ fn parse_input(input: &str) -> DepthMap {
                     )
                 })
             })
-            .flatten()
             .collect(),
     )
 }

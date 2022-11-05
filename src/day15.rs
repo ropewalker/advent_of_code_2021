@@ -23,7 +23,7 @@ impl From<&str> for RiskLevelMap {
             map: map_str
                 .lines()
                 .enumerate()
-                .map(|(y, line)| {
+                .flat_map(|(y, line)| {
                     line.chars().enumerate().map(move |(x, c)| {
                         (
                             Point {
@@ -34,7 +34,6 @@ impl From<&str> for RiskLevelMap {
                         )
                     })
                 })
-                .flatten()
                 .collect(),
             width: map_str.lines().next().unwrap().chars().count(),
             height: map_str.lines().count(),
